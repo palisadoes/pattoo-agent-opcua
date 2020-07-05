@@ -16,14 +16,5 @@ requests
 PyYAML
 ipaddress
 
-# SNMP
-easysnmp
-
-# Modbus
-pymodbus
-
-# BACnet
-BAC0
-
 # OPCUA
 asyncua
