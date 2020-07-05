@@ -1,0 +1,12 @@
+#############################################
+# These additional PIP3 packages are required
+#############################################
+
+# Pattoo packages
+PattooShared==0.0.84
+
+# Miscellaneous packages
+PyYAML
+
+# OPCUA
+asyncua
