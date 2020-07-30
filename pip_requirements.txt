@@ -10,3 +10,4 @@ PyYAML
 
 # OPCUA
 asyncua
+dataclasses
