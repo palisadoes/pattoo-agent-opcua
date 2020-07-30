@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Script to install the pattoo linux agent."""
+"""Script to install the pattoo opcua agent."""
 from inspect import ismethod
 import textwrap
 import argparse
