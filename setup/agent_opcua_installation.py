@@ -42,9 +42,9 @@ class _Parser(argparse.ArgumentParser):
 
     def error(self, message):
         """Override the default behavior of the error method.
+
         Will print the help message whenever the error method is triggered.
-        For example, test.py --blah will print the help message too if --blah
-        isn't a valid option
+
         Args:
             None
         Returns:
@@ -69,11 +69,14 @@ class Parser():
 
     def args(self):
         """Return all the CLI options.
+
         Args:
             None
+
         Returns:
             _args: Namespace() containing all of our CLI arguments as objects
                 - filename: Path to the configuration file
+
         """
         # Initialize key variables
         width = 80
@@ -109,7 +112,7 @@ class _Install():
         # Initialize key variables
         parser = subparsers.add_parser(
             'install',
-            help=textwrap.fill('Install pattoo.', width=width)
+            help=textwrap.fill('Install pattoo opcua agent.', width=width)
         )
         # Add subparser
         self.subparsers = parser.add_subparsers(dest='qualifier')
@@ -131,10 +134,13 @@ class _Install():
 
     def all(self, width=80):
         """CLI command to install all pattoo components.
+
         Args:
             width: Width of the help text string to STDIO before wrapping
+
         Returns:
             None
+
         """
         # Initialize key variables
         parser = self.subparsers.add_parser(
@@ -150,10 +156,12 @@ class _Install():
 
     def pip(self, width=80):
         """CLI command to install the necessary pip3 packages.
+
         Args:
             width: Width of the help text string to STDIO before wrapping
         Returns:
             None
+
         """
         # Initialize key variables
         parser = self.subparsers.add_parser(
@@ -168,10 +176,13 @@ class _Install():
 
     def configuration(self, width=80):
         """CLI command to configure pattoo.
+
         Args:
             width: Width of the help text string to STDIO before wrapping
+
         Returns:
             None
+
         """
         # Initialize key variables
         _ = self.subparsers.add_parser(
@@ -181,10 +192,13 @@ class _Install():
 
     def systemd(self, width=80):
         """CLI command to install and start the system daemons.
+
         Args:
             width: Width of the help text string to STDIO before wrapping
+
         Returns:
             None
+
         """
         # Initialize key variables
         _ = self.subparsers.add_parser(
@@ -195,6 +209,7 @@ class _Install():
 
 def check_user():
     """Validate conditions needed to start installation.
+
     Prevents installation if the script is not run as root
 
     Args:
@@ -224,10 +239,7 @@ def main():
     # Initialize key variables
     _help = 'This program is the CLI interface to configuring pattoo'
     template_dir = os.path.join(ROOT_DIR, 'setup/systemd/system')
-    print(template_dir)
-    daemon_list = [
-                    'pattoo_agent_opcuad'
-                ]
+    daemon_list = ['pattoo_agent_opcuad']
 
     # Ensure user is running as root or travis
     check_user()
@@ -239,22 +251,28 @@ def main():
     # Process CLI options
     if args.action == 'install':
 
-        # Installs all pattoo components
+        # Installs all pattoo opcuad agent components
         if args.qualifier == 'all':
             print('Installing everything')
+            configure.install()
+            packages.install(ROOT_DIR)
+            systemd.install(daemon_list=daemon_list, 
+                            template_dir=template_dir,
+                            installation_dir=ROOT_DIR)
 
+        # Sets up configuration for agent
         elif args.qualifier == 'configuration':
             print('Installing configuration')
             configure.install()
 
+        # Installs pip packages
         elif args.qualifier == 'pip':
             print('Installing pip packages')
             packages.install(ROOT_DIR, args.verbose)
 
+        # Installs and runs system daemons in the daemon list
         elif args.qualifier == 'systemd':
             print('Installing and running system daemons')
-            configure.install()
-            packages.install(ROOT_DIR)
             systemd.install(daemon_list=daemon_list, 
                             template_dir=template_dir,
                             installation_dir=ROOT_DIR)
