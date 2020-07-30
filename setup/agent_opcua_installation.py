@@ -237,7 +237,7 @@ def main():
 
     """
     # Initialize key variables
-    _help = 'This program is the CLI interface to configuring pattoo'
+    _help = 'This program is the CLI interface to configuring the opcua agent'
     template_dir = os.path.join(ROOT_DIR, 'setup/systemd/system')
     daemon_list = ['pattoo_agent_opcuad']
 
