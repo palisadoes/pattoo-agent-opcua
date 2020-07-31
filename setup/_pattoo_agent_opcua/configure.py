@@ -18,12 +18,8 @@ def install():
         os.environ['PATTOO_CONFIGDIR'] = '{0}etc{0}pattoo'.format(os.sep)
     config_directory = os.environ.get('PATTOO_CONFIGDIR')
 
-    config_dict = {
-        'pattoo_agent_opcuad': {
+    opcua_agent_dict = {
             'polling_interval': 300,
-            'ip_listen_address': '127.0.0.1',
-            'ip_bind_port': 5000
-        }
     }
 
     # Attempt to create configuration directory
@@ -38,6 +34,6 @@ def install():
     config_file = configure.pattoo_config(
                                         'pattoo_agent_opcuad',
                                         config_directory,
-                                        config_dict)
+                                        opcua_agent_dict)
 
-    configure.check_config(config_file, config_dict)
+    configure.check_config(config_file, opcua_agent_dict)
