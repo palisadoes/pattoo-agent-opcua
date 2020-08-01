@@ -50,7 +50,7 @@ def check():
             log_message = ('''\
 Section "{}" not found in configuration file in directory {}. Please fix.\
 '''.format(key, config_directory))
-            log.log2die_safe(51008, log_message)
+            log.log2die_safe(70008, log_message)
 
     # Check secondary keys
     secondaries = [
@@ -84,7 +84,7 @@ def secondary_key_check(config, primary, secondaries):
             log_message = ('''\
 Configuration file's "{}" section does not have a "{}" sub-section. \
 Please fix.'''.format(primary, key))
-            log.log2die_safe(51009, log_message)
+            log.log2die_safe(70009, log_message)
 
 
 def main():

@@ -146,7 +146,7 @@ async def _serial_poller_async(tpp):
     except:
         log_message = (
             'Authentication for polling target {} is incorrect'.format(url))
-        log.log2warning(51011, log_message)
+        log.log2warning(70011, log_message)
         pass
 
     if connected is True:
@@ -155,7 +155,7 @@ async def _serial_poller_async(tpp):
             if isinstance(point, PollingPoint) is False:
                 log_message = ('''\
 Invalid polling point {} for OPC UA URL {}'''.format(point, url))
-                log.log2info(51012, log_message)
+                log.log2info(70012, log_message)
                 continue
 
             # Get data
@@ -166,16 +166,16 @@ Invalid polling point {} for OPC UA URL {}'''.format(point, url))
             except BadNodeIdUnknown:
                 log_message = ('''\
 OPC UA node {} not found on server {}'''.format(address, url))
-                log.log2warning(51015, log_message)
+                log.log2warning(70015, log_message)
                 continue
             except:
                 _exception = sys.exc_info()
                 log_message = ('OPC UA server communication error')
-                log.log2exception(51014, _exception, message=log_message)
+                log.log2exception(70014, _exception, message=log_message)
                 log_message = ('''\
 Cannot get value from polling point {} for OPC UA URL {}\
 '''.format(address, url))
-                log.log2info(51013, log_message)
+                log.log2info(70013, log_message)
                 continue
 
             # Create datapoint
