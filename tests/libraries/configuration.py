@@ -58,105 +58,6 @@ class UnittestConfig():
                     'ip_bind_port': 50002,
                 }
             },
-            'pattoo_agent_bacnetipd': {
-                'polling_interval': 893,
-                'agent_ip_address': '127.0.0.50',
-                'polling_groups': [
-                    {
-                        'group_name': 'TEST',
-                        'ip_targets': ['127.0.0.60'],
-                        'points': [
-                            {'address': 123},
-                            {'address': 345}
-                        ]
-                    }
-                ],
-            },
-            'pattoo_agent_snmp_ifmibd': {
-                'polling_interval': 7846,
-                'polling_groups': [
-                    {
-                        'group_name': 'TEST',
-                        'ip_targets': ['localhost'],
-                        'oids': [
-                            {'address': '.1.3.6.1.2.1.2.2.1.14',
-                             'multiplier': 8},
-                            {'address': '.1.3.6.1.2.1.2.2.1.20',
-                             'multiplier': 8}]
-                    }
-                ],
-                'auth_groups': [
-                    {
-                        'group_name': 'TEST',
-                        'snmp_authpassword': '092df34',
-                        'snmp_authprotocol': 'MD5',
-                        'snmp_community': '049s832',
-                        'snmp_port': 161,
-                        'snmp_privpassword': '987dee1234',
-                        'snmp_privprotocol': 'DES',
-                        'snmp_secname': '0981s23df',
-                        'snmp_version': 3,
-                        'ip_targets': ['localhost']
-                    }
-                ]
-            },
-            'pattoo_agent_snmpd': {
-                'polling_interval': 912,
-                'polling_groups': [
-                    {
-                        'group_name': 'TEST',
-                        'ip_targets': ['localhost'],
-                        'oids': [
-                            {'address': '.1.3.6.1.2.1.2.2.1.10',
-                             'multiplier': 8},
-                            {'address': '.1.3.6.1.2.1.2.2.1.16',
-                             'multiplier': 8}]
-                    }
-                ],
-                'auth_groups': [
-                    {
-                        'group_name': 'TEST',
-                        'snmp_authpassword': None,
-                        'snmp_authprotocol': None,
-                        'snmp_community': '8gfljtrwer',
-                        'snmp_port': 161,
-                        'snmp_privpassword': None,
-                        'snmp_privprotocol': None,
-                        'snmp_secname': None,
-                        'snmp_version': 2,
-                        'ip_targets': ['localhost']
-                    }
-                ]
-            },
-            'pattoo_agent_modbustcpd': {
-                'polling_interval': 457,
-                'polling_groups': [
-                    {
-                        'group_name': 'TEST',
-                        'ip_targets': ['unittest.modbus.tcp.target.net'],
-                        'unit': 3,
-                        'input_registers': [
-                            {'address': 30388, 'multiplier': 7},
-                            {'address': 30389, 'multiplier': 7}],
-                        'holding_registers': [
-                            {'address': 40124, 'multiplier': 9},
-                            {'address': 40457, 'multiplier': 9}]
-                    }
-                ],
-            },
-            'pattoo_agent_os_autonomousd': {
-                'polling_interval': 80
-                },
-            'pattoo_agent_os_spoked': {
-                'ip_listen_address': '127.0.0.1',
-                'ip_bind_port': 5000
-                },
-            'pattoo_agent_os_hubd': {
-                'polling_interval': 98,
-                'ip_targets': [
-                    {'ip_address': '127.0.0.1',
-                     'ip_bind_port': 5000}]
-                },
             'pattoo_agent_opcuad': {
                 'polling_interval': 102,
                 'polling_groups': [
@@ -185,15 +86,11 @@ class UnittestConfig():
 
         """
         # Write good_config to file
-        for key, value in sorted(self._config.items()):
+        for key, config_ in sorted(self._config.items()):
             config_file = (
                 '{}{}{}.yaml'.format(self._config_directory, os.sep, key))
-            if key != 'pattoo':
-                _data = {key: value}
-            else:
-                _data = value
             with open(config_file, 'w') as f_handle:
-                yaml.dump(_data, f_handle, default_flow_style=False)
+                yaml.dump(config_, f_handle, default_flow_style=False)
 
         # Return
         return self._config_directory
@@ -256,11 +153,11 @@ Then run this command again.
 
     # Make sure the PATTOO_CONFIGDIR environment variable is set
     if 'PATTOO_CONFIGDIR' not in os.environ:
-        log.log2die_safe(51023, screen_message)
+        log.log2die_safe(70023, screen_message)
 
     # Make sure the PATTOO_CONFIGDIR environment variable is set correctly
     if os.environ['PATTOO_CONFIGDIR'] != config_directory:
-        log.log2die_safe(51024, screen_message)
+        log.log2die_safe(70024, screen_message)
 
     # Update message
     screen_message = ('''{}
@@ -273,4 +170,4 @@ PATTOO_CONFIGDIR is incorrectly set to {}
     if 'unittest' not in os.environ['PATTOO_CONFIGDIR']:
         log_message = (
             'The PATTOO_CONFIGDIR is not set to a unittest directory')
-        log.log2die_safe(51025, log_message)
+        log.log2die_safe(70025, log_message)

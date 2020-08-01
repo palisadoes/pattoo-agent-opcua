@@ -3,7 +3,7 @@
 
 
 # Import project libraries
-from pattoo_shared import configuration, files
+from pattoo_shared import configuration, files, log
 from pattoo_shared.configuration import Config
 from pattoo_shared.variables import TargetPollingPoints
 from pattoo_agent_opcua import PATTOO_AGENT_OPCUAD, OPCUAauth
@@ -41,16 +41,9 @@ class ConfigOPCUA(Config):
 
         """
         # Get result
-        key = PATTOO_AGENT_OPCUAD
-        sub_key = 'polling_interval'
-        intermediate = configuration.search(
-            key, sub_key, self._agent_config, die=False)
-
-        # Default to 300
-        if bool(intermediate) is False:
-            result = 300
-        else:
-            result = abs(int(intermediate))
+        key = 'polling_interval'
+        result = self._agent_config.get(key, 300)
+        result = abs(int(result))
         return result
 
     def target_polling_points(self):
@@ -67,10 +60,14 @@ class ConfigOPCUA(Config):
         result = []
 
         # Get configuration snippet
-        key = PATTOO_AGENT_OPCUAD
-        sub_key = 'polling_groups'
-        groups = configuration.search(
-            key, sub_key, self._agent_config, die=True)
+        key = 'polling_groups'
+        groups = self._agent_config.get(key)
+
+        if groups is None:
+            log_message = '''\
+    "{}" parameter not found in configuration file. Will not poll.'''
+            log.log2info(70003, log_message)
+            return result
 
         # Create snmp objects
         for group in groups:
